@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 /**
  * Created by merritt on 5/3/2015.
  */
-public class SingleMessageListener implements MessageListener  {
+class SingleMessageListener implements MessageListener  {
     private final ArrayBlockingQueue<Message> messages = new ArrayBlockingQueue<Message>(1);
 
     public void processMessage(Chat chat, Message message) {

@@ -1,6 +1,7 @@
 package com.npark.auctionsniper;
 
 import com.npark.auctionsniper.ui.MainWindow;
+import com.npark.auctionsniper.xmpp.AuctionMessageTranslator;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.XMPPConnection;
@@ -9,29 +10,28 @@ import org.jivesoftware.smack.packet.Message;
 
 import javax.swing.*;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.event.WindowAdapter;
 
 /**
  * Created by merritt on 5/3/2015.
  */
-public class Main {
+public class Main implements AuctionEventListener {
     private MainWindow ui;
     private static final int ARG_HOSTNAME = 0;
     private static final int ARG_USERNAME = 1;
     private static final int ARG_PASSWORD = 2;
     private static final int ARG_ITEM_ID = 3;
 
-    public static final String AUCTION_RESOURCE = "Auction";
-    public static final String ITEM_ID_AS_LOGIN = "auction-%s";
-    public static final String AUCTION_ID_FORMAT = ITEM_ID_AS_LOGIN + "@%s/" + AUCTION_RESOURCE;
+    private static final String AUCTION_RESOURCE = "Auction";
+    private static final String ITEM_ID_AS_LOGIN = "auction-%s";
+    private static final String AUCTION_ID_FORMAT = ITEM_ID_AS_LOGIN + "@%s/" + AUCTION_RESOURCE;
     public static final String JOIN_COMMAND_FORMAT = "";
-    public static final String BID_COMMAND_FORMAT = "";
+    public static final String BID_COMMAND_FORMAT = "%d";
 
     @SuppressWarnings("unused")
     private Chat notToBeGCd;
 
-    public Main() throws Exception {
+    private Main() throws Exception {
         startUserInterface();
     }
 
@@ -66,17 +66,7 @@ public class Main {
         disconnectWhenUICloses(connection);
         final Chat chat = connection.getChatManager().createChat(
                 auctionId(itemId, connection),
-                new MessageListener() {
-                    public void processMessage(Chat aChat, Message message) {
-                        SwingUtilities.invokeLater(
-                                new Runnable() {
-                                    public void run() {
-                                        ui.showStatus(MainWindow.STATUS_LOST);
-                                    }
-                                }
-                        );
-                    }
-                }
+                new AuctionMessageTranslator(this)
         );
 
         this.notToBeGCd = chat;
@@ -90,5 +80,17 @@ public class Main {
                 connection.disconnect();
             }
         });
+    }
+
+    public void auctionClosed() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                ui.showStatus(MainWindow.STATUS_LOST);
+            }
+        });
+    }
+
+    public void currentPrice(int price, int increment) {
+
     }
 }

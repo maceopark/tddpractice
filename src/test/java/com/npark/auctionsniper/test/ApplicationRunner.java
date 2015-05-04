@@ -11,8 +11,8 @@ import static com.npark.auctionsniper.ui.MainWindow.STATUS_JOINING;
 import static com.npark.auctionsniper.ui.MainWindow.STATUS_LOST;
 
 public class ApplicationRunner {
-    public static final String SNIPER_ID = "sniper";
-    public static final String SNIPER_PASSWORD = "sniper";
+    private static final String SNIPER_ID = "sniper";
+    private static final String SNIPER_PASSWORD = "sniper";
     public static final String SNIPER_XMPP_ID = "sniper@nochul/Auction";
 
     private AuctionSniperDriver driver;
@@ -40,7 +40,6 @@ public class ApplicationRunner {
     public void hasShownSniperIsBidding() {
         driver.showsSniperStatus(MainWindow.STATUS_BIDDING);
     }
-
 
     public void stop() {
         if (driver != null)

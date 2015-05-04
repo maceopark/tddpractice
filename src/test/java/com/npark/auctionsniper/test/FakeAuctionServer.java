@@ -15,8 +15,8 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 public class FakeAuctionServer {
-    public static final String ITEM_ID_AS_LOGIN = "auction-%s";
-    public static final String AUCTION_RESOURCE = "Auction";
+    private static final String ITEM_ID_AS_LOGIN = "auction-%s";
+    private static final String AUCTION_RESOURCE = "Auction";
     public static final String XMPP_HOSTNAME = "nochul";
     private static final String AUCTION_PASSWORD = "auction";
     private final String itemId;
@@ -65,7 +65,7 @@ public class FakeAuctionServer {
     }
 
     public void announceClosed() throws XMPPException {
-        currentChat.sendMessage(new Message());
+        currentChat.sendMessage("SOLVersion: 1.1; Event: CLOSE;");
     }
 
     public void stop() {
