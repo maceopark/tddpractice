@@ -16,9 +16,9 @@ import org.junit.runner.RunWith;
 @SuppressWarnings("deprecation")
 @RunWith(JMock.class)
 public class AuctionMessageTranslatorTest {
+    private static final Chat UNUSED_CHAT = null;
     private final Mockery context = new Mockery();
     private final AuctionEventListener listener = context.mock(AuctionEventListener.class);
-    private static final Chat UNUSED_CHAT = null;
     private final AuctionMessageTranslator translator = new AuctionMessageTranslator(listener);
 
     @Test

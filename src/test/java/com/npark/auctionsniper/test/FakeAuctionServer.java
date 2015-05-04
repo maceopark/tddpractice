@@ -10,20 +10,19 @@ import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ChatManagerListener;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.packet.Message;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 public class FakeAuctionServer {
+    public static final String XMPP_HOSTNAME = "nochul";
     private static final String ITEM_ID_AS_LOGIN = "auction-%s";
     private static final String AUCTION_RESOURCE = "Auction";
-    public static final String XMPP_HOSTNAME = "nochul";
     private static final String AUCTION_PASSWORD = "auction";
     private final String itemId;
     private final XMPPConnection connection;
-    private Chat currentChat;
-
     private final SingleMessageListener messageListener = new SingleMessageListener();
+    private Chat currentChat;
 
     public FakeAuctionServer(String itemId) {
         this.itemId = itemId;
@@ -34,12 +33,12 @@ public class FakeAuctionServer {
         connection.connect();
         connection.login(String.format(ITEM_ID_AS_LOGIN, itemId), AUCTION_PASSWORD, AUCTION_RESOURCE);
         connection.getChatManager().addChatListener(
-                new ChatManagerListener() {
-                    public void chatCreated(Chat chat, boolean createdLocally) {
-                        currentChat = chat;
-                        chat.addMessageListener(messageListener);
-                    }
+            new ChatManagerListener() {
+                public void chatCreated(Chat chat, boolean createdLocally) {
+                    currentChat = chat;
+                    chat.addMessageListener(messageListener);
                 }
+            }
         );
     }
 

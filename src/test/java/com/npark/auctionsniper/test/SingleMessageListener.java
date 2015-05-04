@@ -7,14 +7,16 @@ import org.jivesoftware.smack.packet.Message;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 
 /**
  * Created by merritt on 5/3/2015.
  */
-class SingleMessageListener implements MessageListener  {
+class SingleMessageListener implements MessageListener {
     private final ArrayBlockingQueue<Message> messages = new ArrayBlockingQueue<Message>(1);
 
     public void processMessage(Chat chat, Message message) {
