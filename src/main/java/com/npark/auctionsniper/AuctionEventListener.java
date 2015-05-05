@@ -6,7 +6,10 @@ import java.util.EventListener;
  * Created by merritt on 5/3/2015.
  */
 public interface AuctionEventListener extends EventListener {
-    void auctionClosed();
+    enum PriceSource {
+        FromSniper, FromOtherBidder;
+    };
 
-    void currentPrice(int price, int increment);
+    void auctionClosed();
+    void currentPrice(int price, int increment, PriceSource priceSource);
 }
